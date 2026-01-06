@@ -4,6 +4,7 @@ using Leoni.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Leoni.Migrations
 {
     [DbContext(typeof(LeoniDbContext))]
-    partial class LeoniDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251230151330_changeEmployee")]
+    partial class changeEmployee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,44 +105,6 @@ namespace Leoni.Migrations
                         .HasName("PK__Permissi__EFA6FB2F002B00F2");
 
                     b.ToTable("Permission", (string)null);
-                });
-
-            modelBuilder.Entity("Leoni.Domain.Entities.RefreshToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRevoked")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ReplacedByToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("RevokedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshToken", (string)null);
                 });
 
             modelBuilder.Entity("Leoni.Domain.Entities.Role", b =>
@@ -296,7 +261,7 @@ namespace Leoni.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("Tasks", (string)null);
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("RolePermission", b =>
@@ -328,16 +293,6 @@ namespace Leoni.Migrations
                         .HasForeignKey("RoleId")
                         .IsRequired()
                         .HasConstraintName("FK__EmployeeR__RoleI__36B12243");
-                });
-
-            modelBuilder.Entity("Leoni.Domain.Entities.RefreshToken", b =>
-                {
-                    b.HasOne("Leoni.Domain.Entities.Employee", "Employee")
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId")
-                        .IsRequired();
-
-                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("Leoni.Domain.Entities.Tasks", b =>
@@ -394,8 +349,6 @@ namespace Leoni.Migrations
 
             modelBuilder.Entity("Leoni.Domain.Entities.Employee", b =>
                 {
-                    b.Navigation("RefreshTokens");
-
                     b.Navigation("Tasks");
 
                     b.Navigation("TasksAssigned");

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 
 namespace Leoni.Repositories
@@ -10,6 +11,7 @@ namespace Leoni.Repositories
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
 
+        DbSet<T> GetDbSet();
         EntityEntry Attach(T entity);
 
         void Update(T entity, params string[] properties);

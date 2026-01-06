@@ -32,6 +32,9 @@ public partial class Tasks
     public bool? NeededForValidation { get; set; }
 
     public string? ResponsibleComponentEngineerId { get; set; }
+    
+    public string? AssignedByFk { get; set; }
+
 
     public DateOnly? CleansingDate { get; set; }
 
@@ -57,6 +60,8 @@ public partial class Tasks
     public string? FailureDetails { get; set; }
 
     public virtual Employee? ResponsibleComponentEngineer { get; set; }
+
+    public virtual Employee? AssignedBy { get; set; }
 
     public virtual Component Component { get; set; } = null!;
 
