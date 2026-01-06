@@ -23,6 +23,11 @@ namespace Leoni.Repositories
              _context.Set<T>().Remove(entity);
         }
 
+        public DbSet<T> GetDbSet()
+        {
+            return _context.Set<T>();
+        }
+
         public async Task AddRange(IEnumerable<T> entities)
         {
             await _context.Set<T>().AddRangeAsync(entities);

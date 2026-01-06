@@ -28,8 +28,7 @@ public partial class LeoniDbContext : DbContext
 
     public virtual DbSet<Tasks> Tasks { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-       => optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=Leoni;Trusted_Connection=True;TrustServerCertificate=True;");
+ 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -49,6 +48,11 @@ public partial class LeoniDbContext : DbContext
             entity.HasKey(e => e.SessionId).HasName("PK__Employee__23DB122B8E84CB5A");
 
             entity.ToTable("Employee");
+
+            entity.HasMany(e => e.RefreshTokens).WithOne(r => r.Employee)
+            .HasForeignKey(r => r.UserId)
+            .OnDelete(DeleteBehavior.ClientSetNull);
+
 
             entity.Property(e => e.SessionId)
                 .HasMaxLength(100)
@@ -160,6 +164,10 @@ public partial class LeoniDbContext : DbContext
             entity.HasOne(d => d.ResponsibleComponentEngineer).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.ResponsibleComponentEngineerId)
                 .HasConstraintName("FK_Tasks_Employee");
+
+            entity.HasOne(d => d.AssignedBy).WithMany(p => p.TasksAssigned)
+            .HasForeignKey(d => d.AssignedByFk)
+            .HasConstraintName("FK_Tasks_AssignedBy");
 
             entity.HasOne(d => d.Status).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.StatusId)
