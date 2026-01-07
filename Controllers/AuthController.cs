@@ -20,7 +20,7 @@ namespace Leoni.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("SignUp")]
         public async Task<ActionResult<ObjWrapper<LoggedInDto>>> SignUp([FromBody] RegistrationDto registrationDto)
         {
             var res = new ObjWrapper<LoggedInDto>() { };
@@ -40,11 +40,11 @@ namespace Leoni.Controllers
 
         }
 
-           
 
 
-            [HttpPost]
-            public async Task<ActionResult<ObjWrapper<LoggedInDto>>> SignIn([FromBody] RegistrationDto registrationDto)
+
+        [HttpPost("SignIn")]
+        public async Task<ActionResult<ObjWrapper<LoggedInDto>>> SignIn([FromBody] RegistrationDto registrationDto)
             {
                 var res = new ObjWrapper<LoggedInDto>() { };
                 try
@@ -66,8 +66,7 @@ namespace Leoni.Controllers
 
             }
 
-        [HttpPost]
-        [Authorize]
+        [HttpPost("SignOut")]
         public async Task<ActionResult> SignOut([FromQuery] string refrehToken , [FromQuery] bool allDevices = false)
         {
      
@@ -76,8 +75,7 @@ namespace Leoni.Controllers
 
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                if (string.IsNullOrEmpty(userId))
-                    return Unauthorized("User is not authenticated missing in token");
+             
 
                 await _authService.SignOut(refrehToken, userId, allDevices);
                 return Ok(new BasicResponse{Message = "SignOut Succefully !" });
@@ -99,7 +97,7 @@ namespace Leoni.Controllers
 
 
 
-        [HttpPost]
+        [HttpPost("RotateToken")]
         public async Task<ActionResult<ObjWrapper<LoggedInDto>>> RotateToken([FromQuery] string refreshToken)
         {
             var res = new ObjWrapper<LoggedInDto>() { };

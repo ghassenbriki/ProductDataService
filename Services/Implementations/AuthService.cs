@@ -59,7 +59,7 @@ namespace Leoni.Services.Implementations
 
 
         }
-        public async Task SignOut(string refreshToken,string employeeId, bool alldevices = false)
+        public async Task SignOut(string refreshToken,string? employeeId, bool alldevices = false)
         {
 
            
