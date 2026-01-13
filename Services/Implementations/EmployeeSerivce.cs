@@ -17,13 +17,18 @@ namespace Leoni.Services.Implementations
 
         public Task<List<Permission>> GetAllPermissions(string sessionId)
         {
-            return _employeeRepo.GetDbSet()
+            var p = 
+             _employeeRepo.GetDbSet()
                 .Where(e => e.SessionId == sessionId)
                 .SelectMany(e => e.Roles)
                 .SelectMany(r => r.Permissions)
-                .AsNoTracking()
-                .DistinctBy(p => p.PermissionId)
-                .ToListAsync();
+               .GroupBy(p => p.PermissionId)
+               .Select(g => g.First())
+               .AsNoTracking()
+               .ToListAsync();
+
+
+            return p;
 
             /*SELECT DISTINCT p.*
             FROM Employees e
