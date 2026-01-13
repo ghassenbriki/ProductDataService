@@ -27,7 +27,7 @@ namespace Leoni.Controllers
             try
             {
 
-                res.Item = await _authService.signIN(registrationDto);
+                res.Item = await _authService.SignUP(registrationDto);
                 return Ok(res);
             }
 

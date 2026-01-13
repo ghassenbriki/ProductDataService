@@ -17,13 +17,20 @@ namespace Leoni.Services.Implementations
         private readonly IGenericRepository<Role> _roleRepository;
         private readonly IGenericRepository<RefreshToken> _refreshTokenRepository;
         private readonly IConfiguration _config;
-        private readonly IEmployeeSerice _employeeSerice;   
+        private readonly IEmployeeSerice _employeeSerice;
+        private readonly IGenericRepository<Permission> _permissionRepository;
 
-        public AuthService(IGenericRepository<Employee> employeeRepository, IGenericRepository<Role> roleRepository,IGenericRepository<RefreshToken> refTokenRepository, IConfiguration config,IEmployeeSerice employeeSerice)
+        public AuthService(IGenericRepository<Employee> employeeRepository,
+            IGenericRepository<Role> roleRepository,
+            IGenericRepository<RefreshToken> refTokenRepository,
+            IConfiguration config,
+            IEmployeeSerice employeeSerice
+            ,IGenericRepository<Permission> permissionRepository)
         {
             _employeeRepository = employeeRepository;
             _roleRepository = roleRepository;
             _refreshTokenRepository = refTokenRepository;
+            _permissionRepository = permissionRepository;
             _employeeSerice = employeeSerice;               
             _config = config;
         }
@@ -98,14 +105,25 @@ namespace Leoni.Services.Implementations
             await _employeeRepository.Add(emp);
             await _employeeRepository.SaveAsync();
 
+            var role = await _roleRepository.Filter(r => r.RoleName == "Regular Employee").FirstOrDefaultAsync();
+            var permission = await _permissionRepository.Filter(p => p.PermissionName == "Task.ChangeState").FirstOrDefaultAsync();
 
-            var role = new Role { RoleName = "Regular Employee"};
-            var permission = new Permission { PermissionName = "Task.ChangeState"};
+            if (role == null)
+            {
+                throw new Exception("Role  : Regular Employee not found");
+            }
 
-            _employeeRepository.Attach(emp);
+            if (permission == null)
+            {
+                throw new Exception("permission :  Task.ChangeState not found");
+
+            }
             role.Employees.Add(emp);
             //emp.Roles.Add(role); optional
             role.Permissions.Add(permission);
+            await _roleRepository.Add(role);
+            await _permissionRepository.Add(permission);
+
             await _roleRepository.SaveAsync();
 
 
