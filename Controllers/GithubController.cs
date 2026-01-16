@@ -8,8 +8,11 @@ namespace Leoni.Controllers
     public class GithubController : ControllerBase
     {
         [HttpPost("webhook")]
-        public IActionResult Webhook()
+        public async Task<ActionResult> Webhook()
         {
+            using var reader = new StreamReader(Request.Body);
+            var body = await reader.ReadToEndAsync();
+
             return Ok();
         }
 
