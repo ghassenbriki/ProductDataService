@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Leoni.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController] 
     public class GithubController : ControllerBase
     {
         [HttpPost("webhook")]
