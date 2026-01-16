@@ -13,14 +13,12 @@ namespace Leoni.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/<EmployeeController>/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<EmployeeController>
         [HttpPost]
         public void Post([FromBody] string value)
         {
