@@ -12,7 +12,6 @@ namespace Leoni.Controllers
         {
             using var reader = new StreamReader(Request.Body);
             var body = await reader.ReadToEndAsync();
-
             return Ok();
         }
 
