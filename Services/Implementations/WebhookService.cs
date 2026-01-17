@@ -37,7 +37,8 @@ namespace Leoni.Services.Implementations
                     break;
 
                 default:
-                    break;
+                    throw new Exception("Github event not handled");
+
             }
 
         }
