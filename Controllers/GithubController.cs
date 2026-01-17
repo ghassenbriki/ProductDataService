@@ -24,6 +24,7 @@ namespace Leoni.Controllers
                 using var reader = new StreamReader(Request.Body, leaveOpen: true);
                 var rawBody = await reader.ReadToEndAsync();
                 Request.Body.Position = 0;
+
                 var gitHubEvent = Request.Headers["X-GitHub-Event"].ToString();
                 var signature = Request.Headers["X-Hub-Signature-256"].ToString();
 
