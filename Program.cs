@@ -1,3 +1,4 @@
+using Leoni.Dtos;
 using Leoni.Persistence;
 using Leoni.Repositories;
 using Leoni.Services.Implementations;
@@ -17,10 +18,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<LeoniDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.Configure<GitHubOptions>(
+    builder.Configuration.GetSection("GitHub"));
+
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmployeeSerice, EmployeeSerivce>();
 builder.Services.AddScoped<IpermissionService, PermissionService>();
+builder.Services.AddScoped<IwebhookService, WebhookService>();
+
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
