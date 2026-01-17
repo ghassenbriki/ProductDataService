@@ -16,11 +16,11 @@ namespace Leoni.Services.Implementations
         {
             _options = opts.Value;   // binding
         }
-        public async Task HandleEvent(WebhookDto dto, string rawBody, string githubEvt, string signatureHeader)
+        public async Task HandleEvent(WebhookDto dto, string payload, string githubEvt, string signatureHeader)
         {
 
             var secret = _options.WebhookSecret;
-            var isValidSecret = SecurityConfig.IsValidGitHubSignature(rawBody, signatureHeader, secret);
+            var isValidSecret = SecurityConfig.IsValidGitHubSignature(payload, signatureHeader, secret);
 
 
 

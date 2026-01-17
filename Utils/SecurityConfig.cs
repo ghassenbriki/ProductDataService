@@ -79,7 +79,7 @@ namespace Leoni.Utils
         }
 
 
-        public static bool IsValidGitHubSignature(string payload, string? signatureHeader, string? secret)
+        public static bool IsValidGitHubSignature(string payload, string signatureHeader, string secret)
         {
             if (string.IsNullOrEmpty(signatureHeader) || string.IsNullOrEmpty(secret)) return false;
 
