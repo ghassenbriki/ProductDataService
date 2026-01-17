@@ -21,7 +21,6 @@ namespace Leoni.Controllers
             try
             {
                 Request.EnableBuffering();
-
                 using var reader = new StreamReader(Request.Body, leaveOpen: true);
                 var rawBody = await reader.ReadToEndAsync();
                 Request.Body.Position = 0;
