@@ -3,6 +3,7 @@ using Leoni.Services.Interfaces;
 using Leoni.Utils;
 using Microsoft.Extensions.Options;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Leoni.Services.Implementations
@@ -16,11 +17,13 @@ namespace Leoni.Services.Implementations
         {
             _options = opts.Value;   // binding
         }
-        public async Task HandleEvent(WebhookDto dto, string payload, string githubEvt, string signatureHeader)
+        public async Task HandleEvent( string payload, string githubEvt, string signatureHeader)
         {
 
             var secret = _options.WebhookSecret;
             var isValidSecret = SecurityConfig.IsValidGitHubSignature(payload, signatureHeader, secret);
+            var dto = JsonSerializer.Deserialize<WebhookDto>(payload);
+
 
 
 
@@ -41,10 +44,10 @@ namespace Leoni.Services.Implementations
 
 
 
-        private Task HandlePushAsync(WebhookDto dto)
+        private Task HandlePushAsync(WebhookDto? dto)
         {
-            var repo = dto.Repository.FullName;
-            var branch = dto.Ref;
+            var repo = dto?.Repository.FullName;
+            var branch = dto?.Ref;
 
             Console.WriteLine($"Push on {branch} in {repo}");
 

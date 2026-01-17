@@ -16,7 +16,7 @@ namespace Leoni.Controllers
             _webhookService = webhookService;
         }
         [HttpPost("webhook")]
-        public async Task<IActionResult> Webhook([FromBody] WebhookDto dto)
+        public async Task<IActionResult> Webhook()
         {
             try
             {
@@ -26,8 +26,7 @@ namespace Leoni.Controllers
                 Request.Body.Position = 0;
                 var gitHubEvent = Request.Headers["X-GitHub-Event"].ToString();
                 var signature = Request.Headers["X-Hub-Signature-256"].ToString();
-
-                await _webhookService.HandleEvent(dto, rawBody, gitHubEvent, signature);
+                await _webhookService.HandleEvent( rawBody, gitHubEvent, signature);
 
                 return Ok();
             }
