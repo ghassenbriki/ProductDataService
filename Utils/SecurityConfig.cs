@@ -77,5 +77,23 @@ namespace Leoni.Utils
             if (password.Any(char.IsWhiteSpace))
                 throw new Exception("Password must not contain spaces");
         }
+
+
+        public static bool IsValidGitHubSignature(string payload, string signatureHeader, string secret)
+        {
+            if (string.IsNullOrEmpty(signatureHeader) || string.IsNullOrEmpty(secret)) return false;
+
+            var secretBytes = Encoding.UTF8.GetBytes(secret);
+
+            using var hmac = new HMACSHA256(secretBytes);
+            var hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(payload));
+
+            var computedSignature = "sha256=" + Convert.ToHexString(hashBytes).ToLower();
+
+            return CryptographicOperations.FixedTimeEquals(
+                Encoding.UTF8.GetBytes(computedSignature),
+                Encoding.UTF8.GetBytes(signatureHeader)
+            );
+        }
     }
 }
